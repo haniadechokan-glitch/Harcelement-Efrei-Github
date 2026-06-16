@@ -126,6 +126,66 @@
     box-shadow: 0 12px 32px rgba(255,209,102,0.35);
   }
 
+  .ai-welcome {
+  position: relative;
+  z-index:1;
+  margin-top: 10px;
+  margin-bottom: 1rem;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  backdrop-filter:blur(10px);
+  border-radius:18px;
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:white;
+  font-size:0.85rem;
+  animation: floatAI 3s ease-in-out infinite;
+}
+
+.ai-circle {
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  background:#FFD166;
+  color:#1A1A2E;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+
+.ai-welcome strong {
+  font-size:0.75rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+.ai-welcome span:last-child {
+  opacity:.8;
+}
+
+
+@keyframes floatAI {
+  0%,100% {
+    transform:translateY(0);
+  }
+  50% {
+    transform:translateY(-6px);
+  }
+}
+
+  .security-text {
+  margin-top: 1.2rem;
+  max-width: 400px;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
   .scroll-hint {
     position: absolute;
     bottom: 2rem;
@@ -569,13 +629,23 @@
 
 <!-- ══ HERO ══ -->
 <section class="hero" id="hero">
-  <div class="badge">💬 PARLONS-EN · QUIZ COLLECTIF IA</div>
-  <h1>Et toi, tu <em>ferais</em><br>quoi contre le <em>harcèlement</em>?</h1>
+  <div class="badge">💬 Mots pour maux · QUIZ COLLECTIF IA</div>
+  <h1>Et toi, tu <em>ferais</em><br>quoi ?</h1>
   <p>Un quiz interactif avec une IA pour comprendre, en parler et savoir comment agir.</p>
   <button class="hero-cta" onclick="scrollToQuiz()">Commencer à parler →</button>
-  <div class="scroll-hint">
-    <div class="scroll-arrow"></div>
+
+<div class="security-text">
+  🔒 Tes réponses servent uniquement à réfléchir à la situation.  
+  Ce test ne juge personne.
+</div>
+
+<div class="ai-welcome">
+  <span class="ai-circle">✦</span>
+  <div>
+    <strong>Assistant IA</strong><br>
+    <span>Salut 👋 Je suis là pour t'aider à réfléchir.</span>
   </div>
+</div>
 </section>
 
 <!-- ══ QUIZ ══ -->

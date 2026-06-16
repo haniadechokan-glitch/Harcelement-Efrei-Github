@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solutions contre le harcèlement</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #323CBF;
+      color: #323CBF;
+      margin: 0;
+      padding: 30px;
+      min-height: 100vh;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --border-radius-lg: 20px;
+      --border-radius-md: 10px;
+      --color-primary: #323CBF;
+      --color-secondary: #FFD166;
+      --color-white: #FFFFFF;
+      --color-text-primary: #323CBF;
+      --color-text-secondary: #323CBF;
+    }
+
+    .hero {
+      background: #FFD166;
+      border: none;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      color: #323CBF;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #323CBF;
+      margin: 5px 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      flex: 1;
+      min-width: 120px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #FFFFFF;
+      color: #323CBF;
+      cursor: pointer;
+      font-weight: bold;
+      transition: .2s;
+      text-align: center;
+    }
+
+    .tab:hover,
+    .tab.active {
+      background: #FFD166;
+    }
+
+    .sec {
+      display: none;
+    }
+
+    .sec.active {
+      display: block;
+    }
+
+    .card {
+      background: #FFFFFF;
+      border: none;
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+      background: #FFD166;
+      color: #323CBF;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+    }
+
+    .btn.primary {
+      background: #323CBF;
+      color: #FFFFFF;
+    }
+
+    .btn.primary:hover {
+      background: #252fa0;
+    }
+
+    .btn.sm {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    .resource-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border: 2px solid #323CBF;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .resource-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .resource-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .resource-info {
+      flex: 1;
+    }
+
+    .resource-name {
+      font-size: 15px;
+      font-weight: bold;
+      color: #323CBF;
+      margin-bottom: 3px;
+    }
+
+    .resource-desc {
+      font-size: 12px;
+      color: #323CBF;
+      line-height: 1.5;
+    }
+
+    .resource-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #323CBF;
+      color: #FFFFFF;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    .badge.yellow {
+      background: #FFD166;
+      color: #323CBF;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+      padding: 10px 15px;
+      background: #323CBF;
+      border-radius: 10px;
+      border-left: 4px solid #FFD166;
+    }
+
+    .tip-block {
+      background: #FFD166;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #323CBF;
+      line-height: 1.6;
+    }
+
+    .steps-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .steps-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #323CBF20;
+      font-size: 13px;
+      color: #323CBF;
+      line-height: 1.5;
+    }
+
+    .steps-list li:last-child {
+      border-bottom: none;
+    }
+
+    .step-num {
+      background: #323CBF;
+      color: #FFFFFF;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .phone-big {
+      font-size: 22px;
+      font-weight: bold;
+      color: #323CBF;
+      letter-spacing: 1px;
+    }
+
+    .free-tag {
+      display: inline-block;
+      background: #E1F5EE;
+      color: #085041;
+      border: 1px solid #1D9E75;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 10px;
+      margin-left: 8px;
+    }
+
+    .anon-tag {
+      display: inline-block;
+      background: #EEEDFE;
+      color: #3C3489;
+      border: 1px solid #7F77DD;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 10px;
+      margin-left: 4px;
+    }
+
+    @media (max-width: 500px) {
+      body { padding: 15px; }
+      .resource-header { flex-direction: column; align-items: flex-start; }
+    }
+
+    .resource-icon img {
+      width: 50px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<h2 class="sr-only">Solutions et ressources contre le harcèlement</h2>
+
+<div class="hero">
+  <h1>🆘 Solutions & Ressources 🆘</h1>
+  <p>Des numéros, des sites, des conseils — tu n'es pas seul·e !</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="sw('numeros')">📞 Numéros d'aide</button>
+  <button class="tab" onclick="sw('sites')">🌐 Sites utiles</button>
+  <button class="tab" onclick="sw('signaler')">🚨 Signaler</button>
+  <button class="tab" onclick="sw('conseils')">💡 Que faire ?</button>
+</div>
+
+<!-- NUMÉROS D'AIDE -->
+<div id="sec-numeros" class="sec active">
+
+  <div class="tip-block">
+    ☎️ Tous ces numéros sont <strong>gratuits</strong>, <strong>confidentiels</strong> et accessibles depuis un téléphone fixe ou mobile. Tu peux appeler pour toi ou pour quelqu'un d'autre.
+  </div>
+
+  <div class="section-title">Numéros nationaux</div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon"><img src="https://www.nonauharcelement.education.gouv.fr/wp-content/uploads/2021/09/3020-logo.png" alt="3020" /></div>
+      <div class="resource-info">
+        <div class="resource-name">3020 — Harcèlement scolaire</div>
+        <div class="resource-desc">
+          Numéro national dédié au harcèlement à l'école. Pour les élèves, les parents et les professionnels.
+          <span class="free-tag">Gratuit</span><span class="anon-tag">Confidentiel</span>
+        </div>
+        <div style="margin-top:8px"><span class="phone-big">3020</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="tel:3020">📞 Appeler le 3020</a>
+      <a class="btn" href="https://www.nonauharcelement.education.gouv.fr" target="_blank" rel="noopener">🌐 Site officiel</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon"><img src="https://play-lh.googleusercontent.com/RsPBRmfAbjOtYEAg3jfAqVCSew0bAgOMbvTVeuhsRI26RYZ_NQWuoydUAeLretBqQQ" alt="3018" /></div>
+      <div class="resource-info">
+        <div class="resource-name">3018 — Cyberharcèlement</div>
+        <div class="resource-desc">
+          Numéro national contre le cyberharcèlement, les contenus haineux en ligne et les violences numériques.
+          <span class="free-tag">Gratuit</span><span class="anon-tag">Confidentiel</span>
+        </div>
+        <div style="margin-top:8px"><span class="phone-big">3018</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="tel:3018">📞 Appeler le 3018</a>
+      <a class="btn" href="https://www.3018.fr" target="_blank" rel="noopener">🌐 Site 3018.fr</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOE24I155v0CSeoM5DDWt09lUQgY0MIqRqsazLJEJ3PX48q7kBMIuAk4BV&s=10" alt="3114" /></div>
+      <div class="resource-info">
+        <div class="resource-name">3114 — Prévention du suicide</div>
+        <div class="resource-desc">
+          Si tu traverses une crise et que tu as des pensées suicidaires, appelle le 3114 — des professionnels t'écoutent 24h/24.
+          <span class="free-tag">Gratuit</span><span class="anon-tag">24h/24</span>
+        </div>
+        <div style="margin-top:8px"><span class="phone-big">3114</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="tel:3114">📞 Appeler le 3114</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon"><img src="https://www.haute-savoie.gouv.fr/var/ide_site/storage/images/actions-de-l-etat/vos-aides/enfants/maltraitance-des-enfants/98871-153-fre-FR/Maltraitance-des-enfants.jpg" alt="119" /></div>
+      <div class="resource-info">
+        <div class="resource-name">119 — Allô Enfance en Danger</div>
+        <div class="resource-desc">
+          Pour les mineurs en danger ou témoins de violence. Disponible 24h/24, 7j/7.
+          <span class="free-tag">Gratuit</span><span class="anon-tag">Anonyme</span>
+        </div>
+        <div style="margin-top:8px"><span class="phone-big">119</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="tel:119">📞 Appeler le 119</a>
+      <a class="btn" href="https://www.allo119.gouv.fr" target="_blank" rel="noopener">🌐 Site officiel</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon"><img src="https://cdn-icons-png.flaticon.com/512/2067/2067602.png" alt="SOS Homophobie" /></div>
+      <div class="resource-info">
+        <div class="resource-name">0 800 108 108 — SOS Homophobie</div>
+        <div class="resource-desc">
+          Écoute et soutien pour les victimes de harcèlement homophobe ou transphobe.
+          <span class="free-tag">Gratuit</span>
+        </div>
+        <div style="margin-top:8px"><span class="phone-big">0 800 108 108</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="tel:0800108108">📞 Appeler</a>
+      <a class="btn" href="https://www.sos-homophobie.org" target="_blank" rel="noopener">🌐 SOS Homophobie</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon"><img src="https://cdn-icons-png.flaticon.com/512/2067/2067602.png" alt="SOS Racisme" /></div>
+      <div class="resource-info">
+        <div class="resource-name">3928 — SOS Racisme</div>
+        <div class="resource-desc">
+          Pour signaler et obtenir de l'aide face aux actes et propos racistes.
+          <span class="free-tag">Gratuit</span>
+        </div>
+        <div style="margin-top:8px"><span class="phone-big">3928</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="tel:3928">📞 Appeler</a>
+      <a class="btn" href="https://www.sos-racisme.org" target="_blank" rel="noopener">🌐 SOS Racisme</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- SITES UTILES -->
+<div id="sec-sites" class="sec">
+
+  <div class="tip-block">
+    🌐 Ces sites proposent des ressources, des guides et des outils pour mieux comprendre le harcèlement et trouver de l'aide.
+  </div>
+
+  <div class="section-title">📚 Information & prévention</div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">🏛️</div>
+      <div class="resource-info">
+        <div class="resource-name">Non au harcèlement — Éducation nationale</div>
+        <div class="resource-desc">Site officiel du gouvernement dédié à la lutte contre le harcèlement scolaire : ressources, signalement, témoignages.</div>
+        <div style="margin-top:6px">
+          <span class="badge">Officiel</span>
+          <span class="badge yellow">Élèves</span>
+          <span class="badge yellow">Parents</span>
+        </div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="https://www.nonauharcelement.education.gouv.fr" target="_blank" rel="noopener">🌐 Visiter le site</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">💻</div>
+      <div class="resource-info">
+        <div class="resource-name">3018.fr — Numéro national contre le cyberharcèlement</div>
+        <div class="resource-desc">Chat en ligne, ressources et mise en relation avec des professionnels pour les violences numériques.</div>
+        <div style="margin-top:6px">
+          <span class="badge">Cyber</span>
+          <span class="badge yellow">Chat dispo</span>
+        </div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="https://www.3018.fr" target="_blank" rel="noopener">🌐 Visiter le site</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">🤗</div>
+      <div class="resource-info">
+        <div class="resource-name">e-Enfance — Association nationale</div>
+        <div class="resource-desc">Association gérant le 3018 : guides pratiques, conseils pour les parents et outils pédagogiques sur le harcèlement en ligne.</div>
+        <div style="margin-top:6px">
+          <span class="badge yellow">Parents</span>
+          <span class="badge yellow">Enseignants</span>
+        </div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="https://www.e-enfance.org" target="_blank" rel="noopener">🌐 Visiter le site</a>
+    </div>
+  </div>
+
+  <div class="section-title">🌈 Soutien spécialisé</div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">🌈</div>
+      <div class="resource-info">
+        <div class="resource-name">SOS Homophobie</div>
+        <div class="resource-desc">Écoute, soutien juridique et ressources pour les victimes de harcèlement homophobe et transphobe.</div>
+        <div style="margin-top:6px"><span class="badge">LGBTQ+</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="https://www.sos-homophobie.org" target="_blank" rel="noopener">🌐 Visiter le site</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">♿</div>
+      <div class="resource-info">
+        <div class="resource-name">APF France Handicap</div>
+        <div class="resource-desc">Ressources et accompagnement pour les personnes handicapées victimes de discrimination ou de harcèlement.</div>
+        <div style="margin-top:6px"><span class="badge">Handicap</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="https://www.apf-francehandicap.org" target="_blank" rel="noopener">🌐 Visiter le site</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">✊</div>
+      <div class="resource-info">
+        <div class="resource-name">SOS Racisme</div>
+        <div class="resource-desc">Association de lutte contre le racisme avec des outils de signalement, aide juridique et ressources éducatives.</div>
+        <div style="margin-top:6px"><span class="badge">Racisme</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="https://www.sos-racisme.org" target="_blank" rel="noopener">🌐 Visiter le site</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- SIGNALER -->
+<div id="sec-signaler" class="sec">
+
+  <div class="tip-block">
+    🚨 Signaler n'est pas de la délation — c'est protéger. Plus tôt tu agis, plus vite la situation peut être stoppée.
+  </div>
+
+  <div class="section-title">📲 Signaler en ligne</div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">🏛️</div>
+      <div class="resource-info">
+        <div class="resource-name">Pharos — Plateforme officielle de signalement</div>
+        <div class="resource-desc">Signale des contenus illicites sur internet (cyberharcèlement, menaces, contenus haineux) directement aux autorités françaises.</div>
+        <div style="margin-top:6px"><span class="badge">Officiel</span><span class="badge yellow">Cyber</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="https://www.internet-signalement.gouv.fr" target="_blank" rel="noopener">🚨 Signaler sur Pharos</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">💻</div>
+      <div class="resource-info">
+        <div class="resource-name">3018 — Signalement cyberharcèlement</div>
+        <div class="resource-desc">Signale un acte de cyberharcèlement directement via le site ou par téléphone. Des experts t'accompagnent pour supprimer les contenus.</div>
+        <div style="margin-top:6px"><span class="badge yellow">Chat</span><span class="badge yellow">Rapide</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="https://www.3018.fr" target="_blank" rel="noopener">🌐 Aller sur 3018.fr</a>
+      <a class="btn" href="tel:3018">📞 Appeler le 3018</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">🏫</div>
+      <div class="resource-info">
+        <div class="resource-name">Signaler à l'école</div>
+        <div class="resource-desc">Tu peux parler à un professeur, au CPE, à l'infirmière scolaire ou au chef d'établissement. Ils ont l'obligation de traiter ta demande.</div>
+        <div style="margin-top:6px"><span class="badge">Scolaire</span></div>
+      </div>
+    </div>
+    <div class="resource-actions">
+      <a class="btn primary" href="tel:3020">📞 Appeler le 3020</a>
+    </div>
+  </div>
+
+  <div class="section-title">📋 Étapes pour signaler efficacement</div>
+
+  <div class="card">
+    <ul class="steps-list">
+      <li>
+        <div class="step-num">1</div>
+        <div><strong>Garde des preuves</strong> — fais des captures d'écran des messages, posts ou vidéos (avec la date visible). Ne supprime rien.</div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div><strong>Note les faits</strong> — date, heure, lieu, personnes présentes. Un journal des événements renforce ton dossier.</div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div><strong>Parle à un adulte de confiance</strong> — parent, enseignant, CPE ou médecin scolaire. Tu n'as pas à gérer ça seul·e.</div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div><strong>Utilise les plateformes de signalement</strong> — Pharos pour internet, le 3020 pour l'école, le 3018 pour le cyber.</div>
+      </li>
+      <li>
+        <div class="step-num">5</div>
+        <div><strong>Si besoin, porte plainte</strong> — rends-toi dans un commissariat ou une gendarmerie avec tes preuves. C'est ton droit.</div>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- CONSEILS -->
+<div id="sec-conseils" class="sec">
+
+  <div class="tip-block">
+    💡 Que tu sois <strong>victime</strong>, <strong>témoin</strong> ou <strong>proche</strong>, voici comment réagir face au harcèlement.
+  </div>
+
+  <div class="section-title">🎯 Si tu es victime</div>
+
+  <div class="card">
+    <ul class="steps-list">
+      <li>
+        <div class="step-num">✅</div>
+        <div><strong>Ne reste pas seul·e</strong> — parle-en à quelqu'un en qui tu as confiance : ami·e, parent, adulte de l'école.</div>
+      </li>
+      <li>
+        <div class="step-num">✅</div>
+        <div><strong>Garde les preuves</strong> — ne supprime pas les messages ou publications, même si ça fait mal de les voir.</div>
+      </li>
+      <li>
+        <div class="step-num">✅</div>
+        <div><strong>Bloque et signale</strong> — sur les réseaux sociaux, utilise les boutons "Signaler" et "Bloquer".</div>
+      </li>
+      <li>
+        <div class="step-num">✅</div>
+        <div><strong>Appelle le 3020 ou le 3018</strong> — des professionnels t'écouteront et t'aideront à trouver une solution.</div>
+      </li>
+      <li>
+        <div class="step-num">✅</div>
+        <div><strong>Ne réponds pas aux provocations</strong> — répondre peut amplifier la situation. Documente plutôt.</div>
+      </li>
+    </ul>
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn primary" href="tel:3020">📞 3020 — Harcèlement scolaire</a>
+      <a class="btn" href="tel:3018">📞 3018 — Cyberharcèlement</a>
+    </div>
+  </div>
+
+  <div class="section-title">👁️ Si tu es témoin</div>
+
+  <div class="card">
+    <ul class="steps-list">
+      <li>
+        <div class="step-num">👋</div>
+        <div><strong>N'encourage pas</strong> — ne ris pas, ne like pas, ne partage pas les contenus humiliants. Tu participerais au harcèlement.</div>
+      </li>
+      <li>
+        <div class="step-num">👋</div>
+        <div><strong>Soutiens la victime en privé</strong> — envoie un message de soutien, ça peut changer beaucoup de choses pour elle.</div>
+      </li>
+      <li>
+        <div class="step-num">👋</div>
+        <div><strong>Signale à un adulte</strong> — parle à un professeur, un parent ou appelle le 3020. Ce n'est pas de la délation.</div>
+      </li>
+      <li>
+        <div class="step-num">👋</div>
+        <div><strong>Interpelle le groupe</strong> — si c'est sans danger pour toi, une simple question comme "C'est vraiment cool ce que vous faites ?" peut faire réfléchir.</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section-title">💛 Si tu es un proche / parent</div>
+
+  <div class="card">
+    <ul class="steps-list">
+      <li>
+        <div class="step-num">❤️</div>
+        <div><strong>Écoute sans minimiser</strong> — ne dis pas "c'est juste une blague" ou "ignore-les". Prends la parole de l'enfant au sérieux.</div>
+      </li>
+      <li>
+        <div class="step-num">❤️</div>
+        <div><strong>Contacte l'établissement scolaire</strong> — demandez un rendez-vous avec le CPE ou la direction rapidement.</div>
+      </li>
+      <li>
+        <div class="step-num">❤️</div>
+        <div><strong>Appelez le 3020</strong> — ils conseillent aussi les parents sur les démarches à suivre.</div>
+      </li>
+      <li>
+        <div class="step-num">❤️</div>
+        <div><strong>Consultez un professionnel de santé</strong> — un médecin ou psychologue peut aider à évaluer l'impact et orienter vers du soutien.</div>
+      </li>
+    </ul>
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn primary" href="tel:3020">📞 Appeler le 3020</a>
+      <a class="btn" href="https://www.nonauharcelement.education.gouv.fr" target="_blank" rel="noopener">🌐 Guide parents</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function sw(name) {
+    const tabs = ['numeros', 'sites', 'signaler', 'conseils'];
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', tabs[i] === name);
+    });
+    document.querySelectorAll('.sec').forEach(sec => {
+      sec.classList.remove('active');
+    });
+    const section = document.getElementById('sec-' + name);
+    if (section) section.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

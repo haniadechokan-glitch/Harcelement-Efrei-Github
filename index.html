@@ -313,14 +313,6 @@
 </head>
 <body>
 
-<!-- ── BANNER CLÉ API ── -->
-<div class="config-banner" id="configBanner">
-  <strong>⚙️ Clé API Groq manquante</strong> — Entre ta clé pour activer l'IA Écho 3 en temps réel.<br>
-  <small>Crée-la gratuitement sur <a href="https://console.groq.com" target="_blank">console.groq.com</a> en 2 minutes.</small><br>
-  <input type="password" id="apiKeyInput" placeholder="gsk_xxxxxxxxxxxxxxxxxxxx" />
-  <button onclick="saveApiKey()">Activer l'IA →</button>
-</div>
-
 <!-- ══ HERO (site 1) ══ -->
 <section class="hero" id="hero">
   <span class="floating-emoji">🌈</span>
@@ -445,35 +437,20 @@
 
 <footer>
   <strong>Parlons-en</strong> · Projet fil rouge "Stop au Harcèlement" · EFREI Bordeaux · Juin 2026<br>
-  <span style="font-size:0.75rem;opacity:0.6;">IA propulsée par Groq (Llama 3) · usage pédagogique uniquement.</span>
+  <span style="font-size:0.75rem;opacity:0.6;">IA propulsée par LiteLLM (Gemma) · usage pédagogique uniquement.</span>
 </footer>
 
 <script>
 // ─────────────────────────────────────────────
 //  CONFIG
 // ─────────────────────────────────────────────
-// ▼▼▼ COLLE TA CLÉ API GROQ ICI ▼▼▼
-const GROQ_API_KEY = "COLLE_TA_CLÉ_ICI";
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+window.LITELLM_API_KEY = "sk-pP2W93_pCzcBZkb91gbGeQ";
 
-const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL   = "llama-3.3-70b-versatile";
-
-let activeApiKey = GROQ_API_KEY;
-
-function saveApiKey() {
-  const val = document.getElementById('apiKeyInput').value.trim();
-  if (val.startsWith('gsk_') && val.length > 20) {
-    activeApiKey = val;
-    document.getElementById('configBanner').classList.remove('visible');
-    alert('✅ Clé API activée !');
-  } else {
-    alert('❌ Clé invalide. Elle doit commencer par gsk_');
-  }
-}
+const LITELLM_API_URL = "https://litellm.chalumoid.fr/v1/chat/completions";
+const LITELLM_MODEL   = "gemma-4-26B";
 
 function hasValidKey() {
-  return activeApiKey && activeApiKey !== "COLLE_TA_CLÉ_ICI" && activeApiKey.startsWith('gsk_');
+  return !!window.LITELLM_API_KEY && window.LITELLM_API_KEY !== 'VOTRE_CLE_API_ICI';
 }
 
 // ─────────────────────────────────────────────
@@ -573,7 +550,6 @@ let quizAnswers = []; // { question, category, answer, score }
 let totalScore = 0;
 
 window.addEventListener('load', () => {
-  if (!hasValidKey()) document.getElementById('configBanner').classList.add('visible');
   renderQuestion(0);
 });
 
@@ -649,24 +625,30 @@ async function showResults() {
   document.getElementById('resultSummary').textContent = tier.summary;
   updateGauge(document.getElementById('gaugeFillFinal'), totalScore);
 
-  if (hasValidKey()) { await callGroqSynthesis(pct); }
-  else { document.getElementById('aiResultText').textContent = "Merci d'avoir répondu à ces questions. Chaque prise de conscience compte. Tu n'es jamais seul·e face au harcèlement — des ressources et des adultes de confiance sont là pour t'aider."; }
+  await callLiteLLMSynthesis(pct);
 }
 
-async function callGroqSynthesis(pct) {
+async function callLiteLLMSynthesis(pct) {
   const recap = quizAnswers.map((a, i) => `Q${i+1} [${a.category}] : "${a.question}"\n→ "${a.answer}" (gravité ${a.score})`).join('\n\n');
   const prompt = `Tu es Écho 3, une IA bienveillante qui aide des lycéens à faire le point sur une situation de harcèlement scolaire.\n\nScore de gravité global : ${pct}%.\nRéponses détaillées :\n${recap}\n\nRédige une synthèse personnalisée de 3-4 phrases : accueille avec empathie, identifie une tendance dans les réponses, propose une piste concrète, rappelle qu'on n'est jamais seul·e. Tutoie. Commence directement, sans formule d'introduction du type "Voici".`;
+  if (!hasValidKey()) {
+    document.getElementById('aiResultText').textContent = getDemoReply();
+    return;
+  }
   try {
-    const r = await fetch(GROQ_API_URL, {
+    const r = await fetch(LITELLM_API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${activeApiKey}` },
-      body: JSON.stringify({ model: GROQ_MODEL, messages: [{ role: 'user', content: prompt }], max_tokens: 300, temperature: 0.75 })
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${window.LITELLM_API_KEY}` },
+      body: JSON.stringify({ model: LITELLM_MODEL, messages: [{ role: 'user', content: prompt }], max_tokens: 300, temperature: 0.75 })
     });
-    if (!r.ok) throw new Error();
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${r.status}`);
+    }
     const d = await r.json();
     document.getElementById('aiResultText').textContent = d.choices?.[0]?.message?.content?.trim() || "Merci d'avoir participé. Tu n'es jamais seul·e face au harcèlement.";
-  } catch {
-    document.getElementById('aiResultText').textContent = "Merci d'avoir participé. Chaque prise de conscience compte. Tu n'es jamais seul·e face au harcèlement.";
+  } catch (err) {
+    document.getElementById('aiResultText').textContent = getFallbackMessage(err);
   }
 }
 
@@ -836,32 +818,14 @@ async function getBotResponse() {
   document.getElementById('sendBtn').disabled = true;
   showTyping();
 
-  const messages = [
-    { role: 'system', content: buildSystemPrompt() },
-    ...chatHistory
-  ];
-
-  if (hasValidKey()) {
-    try {
-      const r = await fetch(GROQ_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${activeApiKey}` },
-        body: JSON.stringify({ model: GROQ_MODEL, messages, max_tokens: 250, temperature: 0.8 })
-      });
-      if (!r.ok) throw new Error();
-      const d = await r.json();
-      const reply = d.choices?.[0]?.message?.content?.trim() || getBotFallback();
-      hideTyping();
-      addBotMessage(reply);
-      chatHistory.push({ role: 'assistant', content: reply });
-    } catch {
-      hideTyping();
-      addBotMessage(getBotFallback());
-    }
-  } else {
-    await delay(1000);
+  try {
+    const reply = await callLiteLLM();
     hideTyping();
-    addBotMessage(getBotFallback());
+    addBotMessage(reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    hideTyping();
+    addBotMessage(getFallbackMessage(err));
   }
 
   isBotTyping = false;
@@ -869,14 +833,46 @@ async function getBotResponse() {
   scrollToBottom();
 }
 
-function getBotFallback() {
-  const fallbacks = [
-    "Je t'entends, et ce que tu ressens est totalement valide. Veux-tu me dire ce qui se passe en ce moment ?",
-    "C'est courageux d'en parler, même anonymement. Tu n'es pas seul·e dans cette situation. Qu'est-ce qui te pèse le plus en ce moment ?",
-    "Merci de me faire confiance. Est-ce que tu veux qu'on parle de comment agir concrètement, ou tu as besoin d'abord d'être entendu·e ?",
-    "Le plus important, c'est que tu saches que ce qui t'arrive n'est pas de ta faute. On peut continuer à en parler ensemble."
+async function callLiteLLM() {
+  if (!hasValidKey()) { return getDemoReply(); }
+
+  const messages = [
+    { role: 'system', content: buildSystemPrompt() },
+    ...chatHistory
   ];
-  return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+
+  const response = await fetch(LITELLM_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${window.LITELLM_API_KEY}` },
+    body: JSON.stringify({ model: LITELLM_MODEL, messages, max_tokens: 400, temperature: 0.75 })
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || `HTTP ${response.status}`);
+  }
+  const data = await response.json();
+  return data.choices[0].message.content.trim();
+}
+
+const DEMO_REPLIES = [
+  "Je t'entends vraiment. Ce que tu partages me touche, et je veux que tu saches que tu as le droit de ressentir exactement ce que tu ressens.",
+  "C'est courageux de l'avoir dit. Est-ce que tu peux me dire depuis combien de temps ça dure ?",
+  "Tu n'es pas seul·e dans ça. Beaucoup de jeunes vivent des situations similaires sans oser en parler. Le fait que tu en parles, c'est déjà un grand pas.",
+  "Est-ce qu'il y a un adulte — un parent, un prof, un conseiller — à qui tu pourrais en parler ? Parfois, une seule personne de confiance peut tout changer.",
+  "Ce n'est absolument pas de ta faute. Le harcèlement, quelle qu'en soit la forme, est toujours de la responsabilité de celui qui le fait, jamais de la victime.",
+  "Si tu te sens en danger ou si ça devient trop lourd, n'hésite pas à appeler le 3114 (prévention du suicide) ou le 119 (enfant en danger). Des gens sont là pour t'écouter."
+];
+let demoIndex = 0;
+function getDemoReply() {
+  const reply = DEMO_REPLIES[demoIndex % DEMO_REPLIES.length];
+  demoIndex++;
+  if (demoIndex === 1) { return "⚠️ Mode démonstration — aucune clé API configurée.\n\n" + reply; }
+  return reply;
+}
+
+function getFallbackMessage(err) {
+  console.error('LiteLLM error:', err);
+  return "Je suis désolé(e), j'ai du mal à répondre en ce moment. Si tu as besoin d'aide urgente, n'hésite pas à appeler le 3114 ou le 119 (gratuit, 7j/7).";
 }
 
 function scrollToBottom() {

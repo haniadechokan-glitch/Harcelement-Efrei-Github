@@ -18,6 +18,10 @@
     --card-bg: #FFFFFF;
     --border: #E8E6F5;
     --green: #22c55e;
+    --severity-low: #6BCB77;
+    --severity-mid: #FFE66D;
+    --severity-high: #FF9F43;
+    --severity-crit: #EE5A5A;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
@@ -38,6 +42,15 @@
     background: radial-gradient(circle, rgba(255,209,102,0.12) 0%, transparent 70%);
     bottom: -80px; left: -80px; pointer-events: none;
   }
+  .floating-emoji {
+    position: absolute; font-size: 2rem; animation: floatRandom 6s ease-in-out infinite; opacity: 0.6;
+    pointer-events: none; user-select: none;
+  }
+  .floating-emoji:nth-child(1) { top: 15%; left: 8%; animation-delay: 0s; }
+  .floating-emoji:nth-child(2) { top: 20%; right: 10%; animation-delay: 1.5s; }
+  .floating-emoji:nth-child(3) { bottom: 25%; left: 6%; animation-delay: 3s; }
+  .floating-emoji:nth-child(4) { bottom: 20%; right: 8%; animation-delay: 4.5s; }
+  @keyframes floatRandom { 0%,100%{transform:translateY(0) rotate(0deg)} 33%{transform:translateY(-12px) rotate(5deg)} 66%{transform:translateY(8px) rotate(-5deg)} }
   .badge {
     display: inline-block; background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.9);
@@ -110,24 +123,24 @@
     font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600;
   }
 
-  /* ── QUIZ ── */
+  /* ── QUIZ (style "Écho 3" — site 2) ── */
   .quiz-section { min-height: 100vh; padding: 4rem 1.5rem; display: flex; flex-direction: column; align-items: center; }
   .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--violet-light); margin-bottom: 0.75rem; }
   .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: var(--text); text-align: center; max-width: 600px; margin-bottom: 0.75rem; }
   .section-sub { color: var(--gray); text-align: center; max-width: 500px; line-height: 1.6; margin-bottom: 3rem; }
-  .thermometer { width: 100%; max-width: 700px; margin-bottom: 2.5rem; }
-  .thermo-track { height: 8px; background: var(--border); border-radius: 100px; overflow: hidden; margin-bottom: 0.6rem; }
-  .thermo-fill { height: 100%; border-radius: 100px; transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1), background 0.5s; width: 0%; background: var(--violet-light); }
-  .thermo-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--gray); }
-  .thermo-step { font-weight: 600; color: var(--violet-light); }
+
+  .progress-bar-container { width: 100%; max-width: 700px; background: #e0d9ff; border-radius: 50px; height: 10px; overflow: hidden; margin-bottom: 6px; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--violet-light), var(--coral)); border-radius: 50px; transition: width .4s ease; width: 0%; }
+  .progress-label { width: 100%; max-width: 700px; display:flex; justify-content: space-between; font-size: 0.8rem; color: var(--gray); margin-bottom: 2rem; }
+
   .quiz-card {
     background: var(--card-bg); border-radius: 24px; padding: 2.5rem;
-    max-width: 700px; width: 100%;
+    max-width: 700px; width: 100%; margin-bottom: 2rem;
     box-shadow: 0 4px 32px rgba(61,26,142,0.08); border: 1px solid var(--border);
   }
   .question-number { font-size: 0.75rem; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
   .question-text { font-family: 'Syne', sans-serif; font-size: clamp(1.15rem,3vw,1.4rem); font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 1.8rem; }
-  .options-grid { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .options-grid { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 0.5rem; }
   .option-btn {
     background: var(--bg); border: 2px solid var(--border); border-radius: 14px;
     padding: 1rem 1.25rem; text-align: left; font-family: 'Inter', sans-serif;
@@ -136,23 +149,6 @@
   .option-btn:hover:not(:disabled) { border-color: var(--violet-light); background: rgba(107,63,212,0.04); transform: translateX(4px); }
   .option-btn.selected { border-color: var(--violet-light); background: rgba(107,63,212,0.07); color: var(--violet); }
   .option-btn:disabled { cursor: default; }
-  .ai-feedback {
-    display: none; background: linear-gradient(135deg, rgba(50,60,191,0.05), rgba(107,63,212,0.08));
-    border-left: 3px solid var(--violet); border-radius: 0 12px 12px 0;
-    padding: 1rem 1.25rem; margin-top: 0.5rem; font-size: 0.92rem; color: var(--text); line-height: 1.6;
-  }
-  .ai-feedback.visible { display: block; }
-  .ai-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 600; color: var(--violet); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
-  .ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
-  .ai-text { color: var(--text); }
-  .loading-dots span {
-    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--violet); margin: 0 2px; animation: dot-bounce 1.2s infinite;
-  }
-  .loading-dots span:nth-child(2){animation-delay:0.2s}
-  .loading-dots span:nth-child(3){animation-delay:0.4s}
-  @keyframes dot-bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
   .next-btn {
     background: var(--violet); color: white; font-family: 'Syne', sans-serif; font-weight: 700;
     font-size: 0.95rem; padding: 0.875rem 2rem; border-radius: 100px; border: none;
@@ -161,6 +157,16 @@
   .next-btn.visible { display: inline-flex; align-items: center; gap: 0.5rem; }
   .next-btn:hover { background: var(--violet-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(61,26,142,0.25); }
 
+  /* Jauge de sévérité en temps réel (site 2) */
+  .gauge-section {
+    width: 100%; max-width: 700px; background: var(--white); border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(61,26,142,0.06); padding: 1.25rem 1.5rem; border: 1px solid var(--border);
+  }
+  .gauge-label { font-size: 0.8rem; font-weight: 600; color: var(--gray); margin-bottom: 0.6rem; text-align: center; text-transform: uppercase; letter-spacing: .05em; }
+  .gauge-track { background: #ece6ff; border-radius: 50px; height: 18px; overflow: hidden; margin-bottom: 0.5rem; }
+  .gauge-fill { height: 100%; width: 0%; border-radius: 50px; background: linear-gradient(90deg, var(--severity-low), var(--severity-mid), var(--severity-high), var(--severity-crit)); transition: width .6s cubic-bezier(.34,1.56,.64,1); }
+  .gauge-ticks { display: flex; justify-content: space-between; font-size: 1.1rem; }
+
   /* ── RESULTS ── */
   .results-section { display: none; min-height: 100vh; padding: 4rem 1.5rem; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
   .results-section.visible { display: flex; }
@@ -168,6 +174,7 @@
   .result-icon { font-size: 3.5rem; margin-bottom: 1.25rem; }
   .result-headline { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem,4vw,2.2rem); font-weight: 800; color: var(--text); margin-bottom: 0.75rem; }
   .result-summary { color: var(--gray); line-height: 1.7; margin-bottom: 2rem; font-size: 1rem; }
+  .gauge-final { margin-bottom: 2rem; }
   .ai-result-block { background: linear-gradient(135deg, var(--violet), var(--violet-light)); border-radius: 18px; padding: 1.75rem; color: white; text-align: left; margin-bottom: 2rem; }
   .ai-result-block .label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; margin-bottom: 0.6rem; }
   .ai-result-text { font-size: 1rem; line-height: 1.7; opacity: 0.95; }
@@ -206,7 +213,6 @@
   }
   .chat-section.visible { display: flex; }
 
-  /* Header chat */
   .chat-header {
     width: 100%; background: var(--violet); padding: 1rem 1.5rem;
     display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 10;
@@ -233,14 +239,12 @@
     letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 100px;
   }
 
-  /* Zone messages */
   .chat-messages {
     flex: 1; width: 100%; max-width: 700px; padding: 1.5rem 1.5rem 0;
     display: flex; flex-direction: column; gap: 1rem;
     overflow-y: auto; min-height: 0;
   }
 
-  /* Bulles */
   .msg { display: flex; gap: 0.75rem; animation: msgIn 0.3s ease; max-width: 85%; }
   @keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
   .msg.user { align-self: flex-end; flex-direction: row-reverse; }
@@ -258,7 +262,6 @@
   .msg.bot .msg-bubble { background: white; color: var(--text); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
   .msg.user .msg-bubble { background: var(--violet); color: white; border-bottom-right-radius: 4px; }
 
-  /* Typing indicator */
   .typing-indicator { display: flex; gap: 0.75rem; align-self: flex-start; animation: msgIn 0.3s ease; }
   .typing-bubble { background: white; border: 1px solid var(--border); border-radius: 18px; border-bottom-left-radius: 4px; padding: 0.85rem 1.1rem; display: flex; gap: 5px; align-items: center; }
   .typing-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gray); animation: typingBounce 1.2s infinite; }
@@ -266,7 +269,6 @@
   .typing-dot:nth-child(3){animation-delay:0.4s}
   @keyframes typingBounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-5px)} }
 
-  /* Options rapides */
   .quick-options {
     width: 100%; max-width: 700px; padding: 0.75rem 1.5rem;
     display: flex; flex-wrap: wrap; gap: 0.5rem;
@@ -278,7 +280,6 @@
   }
   .quick-btn:hover { border-color: var(--violet); background: rgba(50,60,191,0.04); transform: translateY(-1px); }
 
-  /* Zone saisie */
   .chat-input-area {
     width: 100%; max-width: 700px; padding: 1rem 1.5rem 1.5rem;
     display: flex; gap: 0.75rem; align-items: flex-end;
@@ -300,7 +301,6 @@
   .send-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
   .send-btn svg { width: 18px; height: 18px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* Disclaimer anonymat */
   .anon-notice {
     width: 100%; max-width: 700px; text-align: center;
     font-size: 0.75rem; color: var(--gray); padding: 0 1.5rem 0.5rem;
@@ -315,50 +315,53 @@
 
 <!-- ── BANNER CLÉ API ── -->
 <div class="config-banner" id="configBanner">
-  <strong>⚙️ Clé API Groq manquante</strong> — Entre ta clé pour activer les commentaires IA en temps réel.<br>
+  <strong>⚙️ Clé API Groq manquante</strong> — Entre ta clé pour activer l'IA Écho 3 en temps réel.<br>
   <small>Crée-la gratuitement sur <a href="https://console.groq.com" target="_blank">console.groq.com</a> en 2 minutes.</small><br>
   <input type="password" id="apiKeyInput" placeholder="gsk_xxxxxxxxxxxxxxxxxxxx" />
   <button onclick="saveApiKey()">Activer l'IA →</button>
 </div>
 
-<!-- ══ HERO ══ -->
+<!-- ══ HERO (site 1) ══ -->
 <section class="hero" id="hero">
-  <div class="badge">💬 Mots pour maux · QUIZ COLLECTIF IA</div>
+  <span class="floating-emoji">🌈</span>
+  <span class="floating-emoji">💛</span>
+  <span class="floating-emoji">😊</span>
+  <span class="floating-emoji">💙</span>
+  <div class="badge">💬 Mots pour maux · Ensemble contre le harcèlement</div>
   <h1>Et toi, tu <em>ferais</em><br>quoi ?</h1>
-  <p>Un quiz interactif avec une IA pour comprendre, en parler et savoir comment agir face au harcèlement.</p>
+  <p>Une IA pour parler, un quiz pour faire le point sur ce que tu vis, et des solutions concrètes pour le harcèlement, ici on te comprend vraiment</p>
   <button class="hero-cta" onclick="document.getElementById('quizSection').scrollIntoView({behavior:'smooth'})">Commencer à parler →</button>
-  <div class="security-text">🔒 Tes réponses servent uniquement à réfléchir à la situation. Ce test ne juge personne.</div>
+  <div class="security-text">🔒 Tes réponses servent uniquement à réfléchir à la situation. Ce test ne juge personne. Aucune connexion requise, entièrement gratuit et aucune donnée n'est conservée</div>
   <div class="ai-welcome">
     <span class="ai-circle">✦</span>
     <div>
-      <strong>Assistant IA · Groq</strong>
-      <span>Salut 👋 Je suis là pour t'aider à réfléchir.</span>
+      <strong>Assistant IA · Écho 3</strong>
+      <span>Salut 👋 Je suis là pour parler et t'aider à réfléchir 😊</span>
     </div>
   </div>
   <div class="scroll-hint"><div class="scroll-arrow"></div></div>
 </section>
 
-<!-- ══ QUIZ ══ -->
+<!-- ══ QUIZ (style site 2 — Écho 3) ══ -->
 <section class="quiz-section" id="quizSection">
-  <div class="section-label">Quiz IA · 6 questions</div>
-  <h2 class="section-title">Parlons-en, vraiment</h2>
-  <p class="section-sub">Chaque question est commentée par l'IA pour nourrir la discussion en classe. Il n'y a pas de mauvaise réponse.</p>
-  <div class="thermometer">
-    <div class="thermo-track"><div class="thermo-fill" id="thermoFill"></div></div>
-    <div class="thermo-labels">
-      <span>Question <span class="thermo-step" id="stepLabel">1</span> / 6</span>
-      <span id="stepPct">0 %</span>
-    </div>
-  </div>
+  <div class="section-label">Quiz Écho 3 · 8 questions</div>
+  <h2 class="section-title">Fais le point sur ta situation</h2>
+  <p class="section-sub">Réponds en toute honnêteté — il n'y a pas de mauvaise réponse. Une jauge t'indique en temps réel le niveau de gravité ressenti.</p>
+
+  <div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-label"><span>Question <span id="stepLabel">1</span> / 8</span><span id="stepPct">0 %</span></div>
+
   <div class="quiz-card" id="quizCard">
-    <div class="question-number" id="qNumber">Question 1 sur 6</div>
+    <div class="question-number" id="qNumber">Question 1 sur 8</div>
     <div class="question-text" id="qText"></div>
     <div class="options-grid" id="optionsGrid"></div>
-    <div class="ai-feedback" id="aiFeedback">
-      <div class="ai-badge"><div class="ai-dot"></div> Commentaire IA</div>
-      <div class="ai-text" id="aiText"></div>
-    </div>
     <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Question suivante →</button>
+  </div>
+
+  <div class="gauge-section">
+    <div class="gauge-label">Jauge de gravité</div>
+    <div class="gauge-track"><div class="gauge-fill" id="gaugeFill"></div></div>
+    <div class="gauge-ticks"><span>😊</span><span>😐</span><span>😟</span><span>🆘</span></div>
   </div>
 </section>
 
@@ -368,8 +371,12 @@
     <div class="result-icon" id="resultIcon">💬</div>
     <h2 class="result-headline" id="resultHeadline"></h2>
     <p class="result-summary" id="resultSummary"></p>
+    <div class="gauge-final">
+      <div class="gauge-label">Niveau de gravité estimé</div>
+      <div class="gauge-track"><div class="gauge-fill" id="gaugeFillFinal"></div></div>
+    </div>
     <div class="ai-result-block">
-      <div class="label">✦ Synthèse personnalisée par l'IA</div>
+      <div class="label">✦ Synthèse personnalisée par Écho 3</div>
       <div class="ai-result-text" id="aiResultText">
         <span class="loading-dots"><span></span><span></span><span></span></span>
       </div>
@@ -392,10 +399,14 @@
         <div class="resource-icon">🆘</div>
         <div class="resource-info"><strong>3114 — Prévention du suicide</strong><span>Si la situation est très difficile — disponible 24h/24, 7j/7</span></div>
       </a>
+      <a class="resource-card" href="tel:119">
+        <div class="resource-icon">🛡️</div>
+        <div class="resource-info"><strong>119 — Enfance en danger</strong><span>Protection de l'enfance, gratuit et disponible 24h/24, 7j/7</span></div>
+      </a>
     </div>
     <div class="result-actions">
       <button class="chat-cta-btn" onclick="openChat()">
-        💬 Parler à l'IA en anonyme
+        💬 Parler à Écho 3 en anonyme
         <span class="chat-cta-badge">Nouveau</span>
       </button>
       <button class="restart-btn" onclick="restartQuiz()">↩ Recommencer le quiz</button>
@@ -410,7 +421,7 @@
     <button class="chat-back" onclick="closeChat()" title="Retour">←</button>
     <div class="chat-avatar">✦</div>
     <div class="chat-header-info">
-      <div class="chat-header-name">Assistant "Parlons-en"</div>
+      <div class="chat-header-name">Écho 3 — Assistant "Parlons-en"</div>
       <div class="chat-header-status"><div class="status-dot"></div> En ligne · répond en quelques secondes</div>
     </div>
     <div class="anon-badge-header">🔒 Anonyme</div>
@@ -466,49 +477,100 @@ function hasValidKey() {
 }
 
 // ─────────────────────────────────────────────
-//  QUESTIONS QUIZ
+//  QUIZ — 8 questions pondérées (catégories du site 2)
+//  Chaque option porte un score de gravité ; MAX_SCORE = somme des scores max
 // ─────────────────────────────────────────────
 const questions = [
   {
-    text: "Dans ta classe, quelqu'un se fait régulièrement moquer pour ses vêtements. Les autres rient. Toi, tu fais quoi ?",
-    options: ["Je ris aussi pour ne pas me faire remarquer","Je reste silencieux·se, j'observe","Je dis discrètement à la personne que ça n'est pas normal","J'interviens directement et demande aux autres d'arrêter"]
+    category: "Moqueries",
+    text: "Est-ce qu'on se moque régulièrement de toi (physique, vêtements, façon de parler) ?",
+    options: [
+      { label: "Non, jamais", score: 0 },
+      { label: "Rarement, et ça reste léger", score: 1 },
+      { label: "Assez souvent, et ça me blesse", score: 2 },
+      { label: "Tout le temps, devant tout le monde", score: 3 }
+    ]
   },
   {
-    text: "Tu reçois un message d'un·e camarade : \"je me sens seul·e depuis que tout le monde m'ignore\". Quelle est ta première réaction ?",
-    options: ["Je réponds que ça va aller, sans trop m'impliquer","Je lis le message mais je ne sais pas quoi dire","Je lui réponds et je lui propose de se voir pour en parler","Je lui dis d'en parler à un adulte et je l'accompagne si besoin"]
+    category: "Exclusion sociale",
+    text: "Est-ce qu'on t'exclut volontairement des groupes, des discussions ou des activités ?",
+    options: [
+      { label: "Non, je me sens intégré·e", score: 0 },
+      { label: "Parfois, sans que je sache pourquoi", score: 1 },
+      { label: "Souvent, c'est devenu une habitude", score: 2 },
+      { label: "Systématiquement, je suis isolé·e", score: 3 }
+    ]
   },
   {
-    text: "Le harcèlement, c'est quand ça dure dans le temps et que c'est répété. Lequel de ces exemples EST du harcèlement ?",
-    options: ["Une dispute entre amis qui se règle le lendemain","Un surnom moqueur utilisé une seule fois","Un groupe qui exclut systématiquement la même personne depuis des semaines","Un désaccord sur un jeu vidéo en ligne"]
+    category: "Violence physique",
+    text: "As-tu déjà été poussé·e, frappé·e ou bousculé·e volontairement par d'autres élèves ?",
+    options: [
+      { label: "Jamais", score: 0 },
+      { label: "Une fois, un incident isolé", score: 1 },
+      { label: "Plusieurs fois", score: 3 },
+      { label: "Régulièrement, j'ai peur physiquement", score: 4 }
+    ]
   },
   {
-    text: "Tu vois une story Instagram qui se moque méchamment d'un·e élève de ton lycée. Elle a déjà 80 partages. Qu'est-ce que tu fais ?",
-    options: ["Je regarde mais je ne partage pas","Je signale la story à Instagram","Je contacte la personne visée pour la soutenir","Je fais les deux : je signale ET je contacte la personne"]
+    category: "Cyberharcèlement",
+    text: "Reçois-tu des messages méchants, des moqueries ou des montages sur les réseaux sociaux ?",
+    options: [
+      { label: "Non, jamais", score: 0 },
+      { label: "De temps en temps", score: 1 },
+      { label: "Souvent, ça ne s'arrête pas", score: 3 },
+      { label: "En continu, même la nuit", score: 4 }
+    ]
   },
   {
-    text: "Selon toi, pourquoi la plupart des témoins de harcèlement n'interviennent-ils pas ?",
-    options: ["Parce qu'ils pensent que ce n'est pas si grave","Par peur de devenir la prochaine cible","Parce qu'ils ne savent pas comment réagir","Parce qu'ils pensent que ça ne les regarde pas"]
+    category: "Atteinte à l'image",
+    text: "Est-ce qu'on a déjà partagé des rumeurs, des photos ou des messages gênants te concernant sans ton accord ?",
+    options: [
+      { label: "Non", score: 0 },
+      { label: "Une fois, mais c'est resté limité", score: 1 },
+      { label: "Oui, et ça a circulé largement", score: 2 },
+      { label: "Oui, et ça revient régulièrement", score: 3 }
+    ]
   },
   {
-    text: "Si tu étais toi-même victime de harcèlement, quelle serait la chose la plus difficile à faire ?",
-    options: ["En parler à mes parents","En parler à un professeur ou à la direction","En parler à un·e ami·e","Accepter que ce n'est pas de ma faute"]
+    category: "Évitement scolaire",
+    text: "T'arrive-t-il d'éviter d'aller en cours, à la cantine ou à certains endroits pour ne pas croiser certaines personnes ?",
+    options: [
+      { label: "Jamais", score: 0 },
+      { label: "Rarement", score: 1 },
+      { label: "Souvent", score: 2 },
+      { label: "Presque tous les jours", score: 3 }
+    ]
+  },
+  {
+    category: "Impact sur le bien-être",
+    text: "Comment dirais-tu que cette situation affecte ton moral, ton sommeil ou ta concentration ?",
+    options: [
+      { label: "Aucun impact", score: 0 },
+      { label: "Un peu, par moments", score: 1 },
+      { label: "Beaucoup, ça occupe mes pensées", score: 3 },
+      { label: "Énormément, je ne me sens plus bien du tout", score: 4 }
+    ]
+  },
+  {
+    category: "Silence face aux adultes",
+    text: "As-tu déjà essayé d'en parler à un adulte (parent, professeur, CPE) ?",
+    options: [
+      { label: "Oui, et j'ai été entendu·e", score: 0 },
+      { label: "Oui, mais ça n'a rien changé", score: 2 },
+      { label: "Non, je n'ose pas en parler", score: 3 },
+      { label: "Non, je pense que ça ne servirait à rien", score: 4 }
+    ]
   }
 ];
 
-const fallbackFeedback = [
-  ["Rire pour ne pas être ciblé·e, c'est une réaction très humaine. Mais en riant, on envoie un message à la victime : personne n'est de ton côté. C'est ça qui fait le plus de mal.","Observer sans rien dire, c'est l'effet spectateur. Plus il y a de gens qui regardent sans réagir, plus la victime se sent seule.","Dire discrètement 'ça n'est pas normal' change tout pour quelqu'un qui se sent seul. Ce n'est pas grand chose pour toi, mais c'est énorme pour eux.","Intervenir directement, c'est courageux. Une seule personne qui ose peut tout changer."],
-  ["Répondre 'ça va aller' minimise la situation. Cette personne a besoin d'être vraiment entendue.","Ne pas savoir quoi dire, c'est normal. Un simple 'je suis là' vaut mieux que le silence.","Proposer de se voir, c'est offrir une présence réelle. C'est souvent ce dont une personne isolée a le plus besoin.","Orienter vers un adulte ET accompagner, c'est la réponse la plus complète."],
-  ["Une dispute ponctuelle n'est pas du harcèlement. La différence clé : la répétition et le déséquilibre de pouvoir.","Un surnom une seule fois peut blesser, mais ce n'est pas encore du harcèlement. La répétition transforme une moquerie.","Exactement ! L'exclusion systématique d'une même personne est une forme de harcèlement souvent invisible mais très violente.","Un désaccord reste un conflit. Si ça devient une campagne répétée pour humilier, là on parle de cyberharcèlement."],
-  ["Chaque vue sans signalement envoie le message que le contenu est acceptable.","Signaler un contenu, c'est déjà refuser d'être complice. C'est un acte simple mais puissant.","La victime de cyberharcèlement a souvent l'impression que personne n'intervient. Ton message peut briser ça.","Signaler ET soutenir : tu utilises tous les outils disponibles. C'est la combinaison la plus efficace."],
-  ["Parfois ce n'est pas qu'on minimise — c'est qu'on ne sait pas quoi faire. Le manque d'outils est souvent le vrai frein.","La peur d'être ciblé·e est réelle. Mais il existe des façons d'aider sans se mettre directement en danger.","Ne pas savoir comment réagir, c'est souvent le vrai blocage. C'est exactement pour ça que ce quiz existe.","L'indifférence est rare. La plupart des témoins sont mal à l'aise mais ne savent pas comment agir."],
-  ["Parler à ses parents est difficile par peur de les inquiéter. Pourtant, ce sont souvent les mieux placés pour agir.","Parler à un adulte de l'école implique de faire confiance à l'institution. Un simple 'j'ai besoin d'aide' peut suffire.","Parler à un·e ami·e semble plus facile — mais ça demande quand même du courage. Et ça peut être le premier pas.","Accepter que ce n'est pas de sa faute — c'est souvent la dernière chose à laquelle on arrive. Mais c'est la plus importante."]
-];
+const MAX_SCORE = questions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.score)), 0); // = 26
 
 // ─────────────────────────────────────────────
 //  ÉTAT QUIZ
 // ─────────────────────────────────────────────
 let currentQ = 0;
-let quizAnswers = [];
+let quizAnswers = []; // { question, category, answer, score }
+let totalScore = 0;
 
 window.addEventListener('load', () => {
   if (!hasValidKey()) document.getElementById('configBanner').classList.add('visible');
@@ -518,66 +580,40 @@ window.addEventListener('load', () => {
 function renderQuestion(index) {
   const q = questions[index];
   const pct = Math.round((index / questions.length) * 100);
-  document.getElementById('qNumber').textContent = `Question ${index + 1} sur ${questions.length}`;
+  document.getElementById('qNumber').textContent = `Question ${index + 1} sur ${questions.length} · ${q.category}`;
   document.getElementById('qText').textContent = q.text;
   document.getElementById('stepLabel').textContent = index + 1;
   document.getElementById('stepPct').textContent = pct + ' %';
-  document.getElementById('thermoFill').style.width = pct + '%';
-  const colors = ['#323CBF','#4A52C8','#6B3FD4','#8B60E8','#9B70EE','#AB80F2'];
-  document.getElementById('thermoFill').style.background = colors[Math.min(index, colors.length - 1)];
+  document.getElementById('progressBar').style.width = pct + '%';
+
   const grid = document.getElementById('optionsGrid');
   grid.innerHTML = '';
-  q.options.forEach((opt, i) => {
+  q.options.forEach((opt) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
-    btn.textContent = opt;
-    btn.addEventListener('click', () => selectAnswer(i, btn, q));
+    btn.textContent = opt.label;
+    btn.addEventListener('click', () => selectAnswer(opt, btn, q));
     grid.appendChild(btn);
   });
-  document.getElementById('aiFeedback').classList.remove('visible');
   document.getElementById('nextBtn').classList.remove('visible');
-  document.getElementById('aiText').textContent = '';
 }
 
-async function selectAnswer(optionIndex, clickedBtn, q) {
+function selectAnswer(opt, clickedBtn, q) {
   document.querySelectorAll('.option-btn').forEach(b => { b.disabled = true; b.classList.remove('selected'); });
   clickedBtn.classList.add('selected');
-  quizAnswers.push({ question: q.text, answer: q.options[optionIndex] });
-  document.getElementById('aiFeedback').classList.add('visible');
-  document.getElementById('aiText').innerHTML = '<span class="loading-dots"><span></span><span></span><span></span></span>';
 
-  if (hasValidKey()) {
-    await callGroqFeedback(currentQ, optionIndex, q);
-  } else {
-    await new Promise(r => setTimeout(r, 600));
-    document.getElementById('aiText').textContent = fallbackFeedback[currentQ][optionIndex];
-  }
+  quizAnswers.push({ question: q.text, category: q.category, answer: opt.label, score: opt.score });
+  totalScore += opt.score;
+  updateGauge(document.getElementById('gaugeFill'), totalScore);
 
   const nextBtn = document.getElementById('nextBtn');
   nextBtn.classList.add('visible');
-  nextBtn.textContent = currentQ < questions.length - 1 ? 'Question suivante →' : 'Voir mon profil →';
+  nextBtn.textContent = currentQ < questions.length - 1 ? 'Question suivante →' : 'Voir mon résultat →';
 }
 
-async function callGroqFeedback(qIndex, answerIndex, q) {
-  const historique = quizAnswers.slice(0, -1).map((a, i) =>
-    `- Q${i+1} : "${a.question}" → "${a.answer}"`).join('\n');
-  const contextBlock = historique ? `\nRéponses précédentes :\n${historique}\n` : '';
-  const prompt = `Tu es un animateur pédagogique bienveillant pour un quiz lycéen sur le harcèlement scolaire.${contextBlock}
-Question actuelle (Q${qIndex+1}/6) : "${q.text}"
-Réponse choisie : "${q.options[answerIndex]}"
-Donne un commentaire pédagogique de 2-3 phrases. Bienveillant, sans jugement. Si des réponses précédentes sont dispo, fais un lien subtil. Ouvre la réflexion collective. Commence directement.`;
-  try {
-    const r = await fetch(GROQ_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${activeApiKey}` },
-      body: JSON.stringify({ model: GROQ_MODEL, messages: [{ role: 'user', content: prompt }], max_tokens: 200, temperature: 0.7 })
-    });
-    if (!r.ok) throw new Error();
-    const d = await r.json();
-    document.getElementById('aiText').textContent = d.choices?.[0]?.message?.content?.trim() || fallbackFeedback[qIndex][answerIndex];
-  } catch {
-    document.getElementById('aiText').textContent = fallbackFeedback[qIndex][answerIndex];
-  }
+function updateGauge(el, score) {
+  const pct = Math.min(100, Math.round((score / MAX_SCORE) * 100));
+  el.style.width = pct + '%';
 }
 
 function nextQuestion() {
@@ -590,21 +626,36 @@ function nextQuestion() {
   }
 }
 
+// ─────────────────────────────────────────────
+//  RÉSULTATS — 4 niveaux de gravité (site 2)
+// ─────────────────────────────────────────────
+function getSeverityTier(pct) {
+  if (pct < 20) return { icon: '😊', headline: 'Tout semble aller plutôt bien', summary: "D'après tes réponses, ta situation actuelle ne présente pas de signes inquiétants. Continue à rester attentif·ve à toi-même et aux autres." };
+  if (pct < 45) return { icon: '😐', headline: 'Quelques signaux à surveiller', summary: "Certaines de tes réponses montrent des situations à ne pas laisser s'installer. Ce n'est pas anodin — en parler peut vraiment aider." };
+  if (pct < 70) return { icon: '😟', headline: 'Tu traverses quelque chose de difficile', summary: "Tes réponses indiquent une situation pénible qui dure. Tu ne devrais pas avoir à gérer ça seul·e — des personnes peuvent t'aider concrètement." };
+  return { icon: '🆘', headline: 'La situation semble sérieuse', summary: "Ce que tu vis est grave et ce n'est jamais normal. Il est important d'en parler rapidement à un adulte de confiance ou à l'une des lignes d'écoute ci-dessous." };
+}
+
 async function showResults() {
   document.getElementById('quizSection').style.display = 'none';
   const rs = document.getElementById('resultsSection');
   rs.classList.add('visible');
   rs.scrollIntoView({ behavior: 'smooth' });
-  document.getElementById('resultIcon').textContent = '💬';
-  document.getElementById('resultHeadline').textContent = "Merci d'avoir participé";
-  document.getElementById('resultSummary').textContent = "Voici ce que l'IA a retenu de ton parcours. Tu peux aussi continuer à lui parler en anonyme.";
-  if (hasValidKey()) { await callGroqSynthesis(); }
-  else { document.getElementById('aiResultText').textContent = "Merci d'avoir participé à ce quiz. Chaque prise de conscience compte. Tu n'es jamais seul·e face au harcèlement — des ressources et des adultes de confiance sont là pour t'aider."; }
+
+  const pct = Math.round((totalScore / MAX_SCORE) * 100);
+  const tier = getSeverityTier(pct);
+  document.getElementById('resultIcon').textContent = tier.icon;
+  document.getElementById('resultHeadline').textContent = tier.headline;
+  document.getElementById('resultSummary').textContent = tier.summary;
+  updateGauge(document.getElementById('gaugeFillFinal'), totalScore);
+
+  if (hasValidKey()) { await callGroqSynthesis(pct); }
+  else { document.getElementById('aiResultText').textContent = "Merci d'avoir répondu à ces questions. Chaque prise de conscience compte. Tu n'es jamais seul·e face au harcèlement — des ressources et des adultes de confiance sont là pour t'aider."; }
 }
 
-async function callGroqSynthesis() {
-  const recap = quizAnswers.map((a, i) => `Q${i+1} : "${a.question}"\n→ "${a.answer}"`).join('\n\n');
-  const prompt = `Tu es un animateur de sensibilisation. Voici le parcours complet d'un lycéen dans le quiz "Stop au Harcèlement" :\n\n${recap}\n\nRédige une synthèse personnalisée de 3-4 phrases : valorise la participation, identifie une tendance dans les réponses, propose une piste concrète, rappelle qu'on n'est jamais seul·e. Commence directement.`;
+async function callGroqSynthesis(pct) {
+  const recap = quizAnswers.map((a, i) => `Q${i+1} [${a.category}] : "${a.question}"\n→ "${a.answer}" (gravité ${a.score})`).join('\n\n');
+  const prompt = `Tu es Écho 3, une IA bienveillante qui aide des lycéens à faire le point sur une situation de harcèlement scolaire.\n\nScore de gravité global : ${pct}%.\nRéponses détaillées :\n${recap}\n\nRédige une synthèse personnalisée de 3-4 phrases : accueille avec empathie, identifie une tendance dans les réponses, propose une piste concrète, rappelle qu'on n'est jamais seul·e. Tutoie. Commence directement, sans formule d'introduction du type "Voici".`;
   try {
     const r = await fetch(GROQ_API_URL, {
       method: 'POST',
@@ -620,51 +671,58 @@ async function callGroqSynthesis() {
 }
 
 function restartQuiz() {
-  currentQ = 0; quizAnswers = [];
+  currentQ = 0; quizAnswers = []; totalScore = 0;
   document.getElementById('quizSection').style.display = 'flex';
   document.getElementById('resultsSection').classList.remove('visible');
-  document.getElementById('thermoFill').style.width = '0%';
+  document.getElementById('progressBar').style.width = '0%';
+  updateGauge(document.getElementById('gaugeFill'), 0);
   renderQuestion(0);
   document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
 }
 
 // ─────────────────────────────────────────────
-//  CHATBOT
+//  CHATBOT — Écho 3
+//  Système : prompt dynamique construit à partir du score du quiz (site 2)
 // ─────────────────────────────────────────────
-
-// Historique de conversation pour Groq (format OpenAI)
 let chatHistory = [];
-let chatPhase = 'onboarding'; // 'onboarding' | 'free'
-let onboardingStep = 0;
 let isBotTyping = false;
 
-// Questions d'onboarding posées par le bot au début
-const onboardingQuestions = [
-  "Est-ce que tu vis cette situation toi-même, tu en es témoin, ou tu veux juste en savoir plus ?",
-  "C'est plutôt une situation qui se passe en classe, sur les réseaux sociaux, ou les deux ?",
-  "Est-ce que tu as déjà essayé d'en parler à quelqu'un ?"
-];
+function buildSystemPrompt() {
+  const pct = quizAnswers.length > 0 ? Math.round((totalScore / MAX_SCORE) * 100) : null;
+  const recap = quizAnswers.length > 0
+    ? quizAnswers.map((a, i) => `Q${i+1} [${a.category}] : "${a.answer}" (gravité ${a.score})`).join('\n')
+    : "L'utilisateur n'a pas encore fait le quiz.";
 
-// Options rapides pour chaque question d'onboarding
-const onboardingOptions = [
-  ["Je le vis moi-même 😔", "J'en suis témoin 👀", "Je veux juste m'informer 📚"],
-  ["En classe / au lycée", "Sur les réseaux sociaux", "Les deux à la fois"],
-  ["Oui, à un ami·e", "Oui, à un adulte", "Non, pas encore", "Je ne sais pas comment faire"]
-];
+  return `Tu es Écho 3, une IA bienveillante et empathique qui aide anonymement des lycéens à parler du harcèlement scolaire.
 
-// Prompt système du chatbot
-const CHAT_SYSTEM_PROMPT = `Tu es un assistant bienveillant et anonyme qui aide des lycéens à parler du harcèlement scolaire. Tu t'appelles "Parlons-en".
+${pct !== null ? `RÉSULTATS DU QUIZ (score global : ${pct}% de gravité) :\n${recap}` : recap}
 
 Règles absolues :
 - Tu ne demandes JAMAIS le prénom, le nom, l'école ou toute info personnelle identifiable — la conversation est 100% anonyme
-- Tu es chaleureux, direct, jamais condescendant
-- Tu parles comme un ami un peu plus âgé, pas comme un adulte donnant une leçon
-- Tu valides toujours les émotions avant de donner des conseils
-- Si quelqu'un semble en danger immédiat ou très en détresse, tu l'orientes vers le 3020 (harcèlement) ou le 3114 (détresse psychologique) — numéros gratuits et anonymes
+- Tutoie toujours, parle de façon chaleureuse, directe et jamais condescendante, comme un ami un peu plus âgé
+- Valide toujours les émotions avant de donner des conseils
+- Ne donne pas de diagnostic médical et ne prétends pas être un professionnel de santé
+- Si la situation semble grave ou si la personne évoque une détresse suicidaire, oriente-la immédiatement vers le 3114 (prévention du suicide, gratuit 24h/24) ou le 119 (enfance en danger)
 - Tu n'inventes jamais de faits — si tu ne sais pas, tu le dis
-- Tu gardes tes réponses courtes (3-5 phrases max) pour que la conversation reste fluide
-- Tu peux poser UNE question à la fin de chaque réponse pour approfondir
-- Si la personne a fait le quiz avant, tu peux t'en souvenir pour personnaliser`;
+- Réponses courtes (3-5 phrases max) pour garder une conversation fluide
+- Termine généralement par UNE question ouverte pour approfondir
+- Rappelle régulièrement que ce n'est jamais de la faute de la personne`;
+}
+
+function getOpeningMessage() {
+  if (quizAnswers.length === 0) {
+    return "Salut 👋 Je suis Écho 3. Je suis là pour parler avec toi, en toute anonymité. Tu veux me dire ce qui t'amène aujourd'hui ?";
+  }
+  const pct = Math.round((totalScore / MAX_SCORE) * 100);
+  if (pct < 20) {
+    return "Salut 👋 Je suis Écho 3. Je suis content·e que tu sois là ! D'après ce que tu m'as partagé, les choses semblent aller plutôt bien pour toi. Mais je suis là si tu veux parler de quelque chose qui te tracasse. Comment tu te sens en ce moment ?";
+  } else if (pct < 45) {
+    return "Salut 💛 Je suis Écho 3. Merci de m'avoir fait confiance en répondant à ces questions. J'ai l'impression qu'il y a peut-être des choses qui te pèsent un peu… Tu veux bien me raconter ce qui se passe ? Je t'écoute vraiment.";
+  } else if (pct < 70) {
+    return "Hey 💙 Je suis Écho 3. Je suis vraiment content·e que tu sois là, parce que ce que tu vis ne devrait pas rester tout seul dans ta tête. Tes réponses me montrent que tu traverses quelque chose de difficile en ce moment. Tu n'as pas à porter ça seul·e. Tu veux me parler de ce qui se passe ?";
+  }
+  return "Hey 🤍 Je suis Écho 3. Avant tout, je veux que tu saches que tu as eu beaucoup de courage de répondre à ces questions. Ce que tu vis semble vraiment difficile, et ça ne devrait jamais arriver à qui que ce soit. Je suis là pour t'écouter sans te juger. Qu'est-ce qui se passe exactement ?";
+}
 
 function openChat() {
   document.getElementById('resultsSection').classList.remove('visible');
@@ -672,25 +730,15 @@ function openChat() {
   document.getElementById('chatSection').classList.add('visible');
   window.scrollTo(0, 0);
 
-  // Reset
   chatHistory = [];
-  chatPhase = 'onboarding';
-  onboardingStep = 0;
   document.getElementById('chatMessages').innerHTML = '';
   document.getElementById('quickOptions').innerHTML = '';
 
-  // Préparer le contexte quiz pour l'IA
-  const quizContext = quizAnswers.length > 0
-    ? `L'utilisateur vient de faire le quiz. Ses réponses : ${quizAnswers.map((a,i) => `Q${i+1}: "${a.answer}"`).join(' | ')}.`
-    : '';
-
-  // Message de bienvenue
+  const opening = getOpeningMessage();
   setTimeout(() => {
-    addBotMessage(`Salut 👋 Je suis là pour parler avec toi, en toute anonymité. ${quizContext ? "J'ai vu tes réponses au quiz — ça peut nous aider à aller plus loin ensemble." : "Ensemble on peut réfléchir à ce que tu traverses."}`);
-    setTimeout(() => {
-      addBotMessage(onboardingQuestions[0]);
-      showQuickOptions(onboardingOptions[0]);
-    }, 900);
+    addBotMessage(opening);
+    chatHistory.push({ role: 'assistant', content: opening });
+    showQuickOptions(["Que faire si personne ne me croit ?", "Comment en parler à mes parents ?", "C'est quoi le 3020 ?", "Je veux juste en parler"]);
   }, 400);
 }
 
@@ -701,33 +749,26 @@ function closeChat() {
   document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ── Afficher un message bot ──
 function addBotMessage(text) {
   const msgs = document.getElementById('chatMessages');
   const div = document.createElement('div');
   div.className = 'msg bot';
-  div.innerHTML = `
-    <div class="msg-avatar">✦</div>
-    <div class="msg-bubble">${text}</div>
-  `;
+  div.innerHTML = `<div class="msg-avatar">✦</div><div class="msg-bubble"></div>`;
+  div.querySelector('.msg-bubble').textContent = text;
   msgs.appendChild(div);
   scrollToBottom();
 }
 
-// ── Afficher un message utilisateur ──
 function addUserMessage(text) {
   const msgs = document.getElementById('chatMessages');
   const div = document.createElement('div');
   div.className = 'msg user';
-  div.innerHTML = `
-    <div class="msg-avatar">Toi</div>
-    <div class="msg-bubble">${text}</div>
-  `;
+  div.innerHTML = `<div class="msg-avatar">Toi</div><div class="msg-bubble"></div>`;
+  div.querySelector('.msg-bubble').textContent = text;
   msgs.appendChild(div);
   scrollToBottom();
 }
 
-// ── Indicateur "en train d'écrire" ──
 function showTyping() {
   const msgs = document.getElementById('chatMessages');
   const div = document.createElement('div');
@@ -750,7 +791,6 @@ function hideTyping() {
   if (el) el.remove();
 }
 
-// ── Options rapides ──
 function showQuickOptions(options) {
   const container = document.getElementById('quickOptions');
   container.innerHTML = '';
@@ -758,7 +798,7 @@ function showQuickOptions(options) {
     const btn = document.createElement('button');
     btn.className = 'quick-btn';
     btn.textContent = opt;
-    btn.onclick = () => handleQuickOption(opt);
+    btn.onclick = () => { clearQuickOptions(); addUserMessage(opt); chatHistory.push({ role: 'user', content: opt }); getBotResponse(); };
     container.appendChild(btn);
   });
 }
@@ -767,33 +807,6 @@ function clearQuickOptions() {
   document.getElementById('quickOptions').innerHTML = '';
 }
 
-// ── Gestion des options rapides ──
-async function handleQuickOption(text) {
-  clearQuickOptions();
-  addUserMessage(text);
-  chatHistory.push({ role: 'user', content: text });
-
-  if (chatPhase === 'onboarding') {
-    onboardingStep++;
-    if (onboardingStep < onboardingQuestions.length) {
-      // Prochaine question d'onboarding
-      showTyping();
-      await delay(800);
-      hideTyping();
-      addBotMessage(onboardingQuestions[onboardingStep]);
-      showQuickOptions(onboardingOptions[onboardingStep]);
-      chatHistory.push({ role: 'assistant', content: onboardingQuestions[onboardingStep] });
-    } else {
-      // Fin de l'onboarding → transition vers conversation libre
-      chatPhase = 'free';
-      await getBotResponse(text, true);
-    }
-  } else {
-    await getBotResponse(text, false);
-  }
-}
-
-// ── Envoi d'un message libre ──
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
@@ -803,7 +816,7 @@ async function sendMessage() {
   clearQuickOptions();
   addUserMessage(text);
   chatHistory.push({ role: 'user', content: text });
-  await getBotResponse(text, false);
+  await getBotResponse();
 }
 
 function handleKey(e) {
@@ -818,25 +831,13 @@ function autoResize(el) {
   el.style.height = Math.min(el.scrollHeight, 120) + 'px';
 }
 
-// ── Appel Groq pour le chatbot ──
-async function getBotResponse(userMessage, isOnboardingEnd) {
+async function getBotResponse() {
   isBotTyping = true;
   document.getElementById('sendBtn').disabled = true;
   showTyping();
 
-  const quizContext = quizAnswers.length > 0
-    ? `Contexte : l'utilisateur a fait le quiz avant. Ses réponses : ${quizAnswers.map((a,i) => `Q${i+1}: "${a.answer}"`).join(' | ')}. `
-    : '';
-
-  const systemWithContext = CHAT_SYSTEM_PROMPT + '\n' + quizContext;
-
-  // Si fin d'onboarding, on fait une synthèse + on ouvre la conversation
-  const extraInstruction = isOnboardingEnd
-    ? '\nL\'utilisateur vient de finir les questions initiales. Fais une courte synthèse bienveillante de ce qu\'il t\'a dit (2 phrases max), puis demande-lui comment tu peux l\'aider concrètement aujourd\'hui.'
-    : '';
-
   const messages = [
-    { role: 'system', content: systemWithContext + extraInstruction },
+    { role: 'system', content: buildSystemPrompt() },
     ...chatHistory
   ];
 
@@ -853,11 +854,6 @@ async function getBotResponse(userMessage, isOnboardingEnd) {
       hideTyping();
       addBotMessage(reply);
       chatHistory.push({ role: 'assistant', content: reply });
-
-      // Proposer des options rapides contextuelles après certains échanges
-      if (chatHistory.length === 8) {
-        showQuickOptions(["Que faire si personne ne me croit ?", "Comment en parler à mes parents ?", "C'est quoi le 3020 ?", "Je veux juste en parler encore"]);
-      }
     } catch {
       hideTyping();
       addBotMessage(getBotFallback());
@@ -883,7 +879,6 @@ function getBotFallback() {
   return fallbacks[Math.floor(Math.random() * fallbacks.length)];
 }
 
-// ── Utilitaires ──
 function scrollToBottom() {
   const msgs = document.getElementById('chatMessages');
   setTimeout(() => msgs.scrollTo({ top: msgs.scrollHeight, behavior: 'smooth' }), 50);

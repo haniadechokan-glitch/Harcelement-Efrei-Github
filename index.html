@@ -110,6 +110,20 @@
     font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600;
   }
 
+  /* ── SITE NAME BANNER ── */
+  .site-name-banner {
+    background: var(--violet); padding: 2.5rem 1.5rem 3rem;
+    text-align: center; display: flex; flex-direction: column; align-items: center;
+  }
+  .site-name-banner .site-name {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--yellow); margin-bottom: 0.5rem; letter-spacing: 0.01em;
+  }
+  .site-name-banner .site-subtitle {
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--white);
+  }
+
   /* ── QUIZ ── */
   .quiz-section { min-height: 100vh; padding: 4rem 1.5rem; display: flex; flex-direction: column; align-items: center; }
   .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--violet-light); margin-bottom: 0.75rem; }
@@ -337,6 +351,12 @@
   </div>
   <div class="scroll-hint"><div class="scroll-arrow"></div></div>
 </section>
+
+<!-- ══ NOM DU SITE ══ -->
+<div class="site-name-banner">
+  <div class="site-name">Mots Pour Maux</div>
+  <div class="site-subtitle">Ensemble contre le harcèlement</div>
+</div>
 
 <!-- ══ QUIZ ══ -->
 <section class="quiz-section" id="quizSection">

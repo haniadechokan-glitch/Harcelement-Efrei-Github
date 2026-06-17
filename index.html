@@ -537,11 +537,28 @@ function renderQuestion(index) {
   document.getElementById('aiFeedback').classList.remove('visible');
   document.getElementById('nextBtn').classList.remove('visible');
   document.getElementById('aiText').textContent = '';
+  selectedBtn = null;
 }
 
+let selectedBtn = null;
+
 async function selectAnswer(optionIndex, clickedBtn, q) {
-  document.querySelectorAll('.option-btn').forEach(b => { b.disabled = true; b.classList.remove('selected'); });
+  if (selectedBtn === clickedBtn) {
+    // Déselection : on annule la réponse
+    clickedBtn.classList.remove('selected');
+    selectedBtn = null;
+    quizAnswers.pop();
+    document.getElementById('aiFeedback').classList.remove('visible');
+    document.getElementById('aiText').textContent = '';
+    document.getElementById('nextBtn').classList.remove('visible');
+    return;
+  }
+
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
   clickedBtn.classList.add('selected');
+  selectedBtn = clickedBtn;
+
+  if (quizAnswers.length === currentQ + 1) quizAnswers.pop();
   quizAnswers.push({ question: q.text, answer: q.options[optionIndex] });
   document.getElementById('aiFeedback').classList.add('visible');
   document.getElementById('aiText').innerHTML = '<span class="loading-dots"><span></span><span></span><span></span></span>';
@@ -552,6 +569,8 @@ async function selectAnswer(optionIndex, clickedBtn, q) {
     await new Promise(r => setTimeout(r, 600));
     document.getElementById('aiText').textContent = fallbackFeedback[currentQ][optionIndex];
   }
+
+  if (selectedBtn !== clickedBtn) return; // l'utilisateur a changé/désélectionné pendant le chargement
 
   const nextBtn = document.getElementById('nextBtn');
   nextBtn.classList.add('visible');
